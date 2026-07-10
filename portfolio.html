@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>포트폴리오 — 온돌컴퍼니</title>
+<meta name="description" content="온돌컴퍼니 포트폴리오 — 프로젝트 사례와 강의·교육 실적.">
+<meta property="og:title" content="포트폴리오 — 온돌컴퍼니">
+<meta property="og:description" content="우리가 발견한 진짜들. Heart over hype.">
+<meta property="og:image" content="assets/logo-og.png">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="assets/emblem.png">
+<link rel="stylesheet" href="assets/ondol.css">
+<style>
+.pf-hero { padding: 100px 0 70px; text-align: center; position: relative; overflow: hidden; }
+.pf-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% -20%, rgba(232, 112, 42, 0.14), transparent 70%);
+  pointer-events: none;
+}
+.pf-hero .eyebrow { position: relative; }
+.pf-hero h1 {
+  position: relative; font-family: var(--serif-kr); font-weight: 700; font-size: 46px; line-height: 1.35;
+}
+.pf-hero p.lead { position: relative; margin: 18px auto 0; max-width: 460px; color: var(--txt-dark-muted); font-size: 17px; text-wrap: pretty; }
+
+.pf-body { background: var(--ivory); color: var(--txt-on-light); padding: 90px 0 110px; }
+.group-head { display: flex; align-items: baseline; gap: 18px; margin: 0 0 40px; }
+.group-head h2 { font-family: var(--serif-kr); font-size: 30px; font-weight: 700; }
+.group-head .count { font-family: var(--serif-en); font-size: 14px; color: var(--ember-deep); letter-spacing: 0.1em; }
+.group + .group { margin-top: 96px; }
+
+.case-list { display: grid; gap: 18px; }
+.case {
+  border: 1px solid var(--paper-line); border-radius: 16px; background: var(--paper);
+  padding: 36px 36px; display: grid; grid-template-columns: 150px 1fr; gap: 32px;
+  transition: border-color 0.2s;
+}
+.case:hover { border-color: var(--ember); }
+.case .meta { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.case .tag {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--ember-deep);
+  border: 1px solid currentColor; border-radius: 999px; padding: 3px 12px;
+}
+.case .year { font-family: var(--serif-en); font-size: 13px; color: var(--txt-light-muted); letter-spacing: 0.1em; }
+.case h3 { font-family: var(--serif-kr); font-size: 22px; font-weight: 700; line-height: 1.5; }
+.case .q {
+  margin-top: 10px; font-family: var(--serif-kr); font-size: 15px; font-weight: 600;
+  color: var(--ember-deep);
+}
+.case .desc { margin-top: 12px; font-size: 15px; color: var(--txt-light-muted); max-width: 640px; text-wrap: pretty; }
+.case .outcome { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+.case .outcome span {
+  font-size: 12.5px; font-weight: 600; color: var(--txt-light-muted);
+  background: rgba(23, 18, 16, 0.05); border-radius: 999px; padding: 4px 14px;
+}
+
+.pf-cta { text-align: center; padding: 110px 28px; }
+.pf-cta h2 { font-family: var(--serif-kr); font-size: 38px; font-weight: 700; line-height: 1.4; }
+.pf-cta p { margin: 16px 0 36px; color: var(--txt-dark-muted); }
+
+@media (max-width: 720px) {
+  .case { grid-template-columns: 1fr; gap: 18px; padding: 28px 24px; }
+  .case .meta { flex-direction: row; align-items: center; }
+  .pf-hero h1 { font-size: 34px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" data-screen-label="내비게이션">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img src="assets/emblem.png" alt="온돌컴퍼니 엠블럼">
+      <span>ONDOL COMPANY</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#about">소개</a>
+      <a href="index.html#services">서비스</a>
+      <a href="portfolio.html">포트폴리오</a>
+      <a class="nav-ig" href="https://www.instagram.com/ondol_company" target="_blank" rel="noopener" aria-label="인스타그램 @ondol_company">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"></circle></svg>
+      </a>
+      <a class="nav-cta" href="index.html#contact">문의하기</a>
+    </div>
+  </div>
+</nav>
+
+<header class="pf-hero" data-screen-label="포트폴리오 헤더">
+  <p class="eyebrow">Portfolio</p>
+  <h1>우리가 발견한 진짜들</h1>
+  <p class="lead">모든 프로젝트는 하나의 질문을 통과했습니다.<br>"이건 진짜인가?"</p>
+</header>
+
+<div class="pf-body">
+  <div class="wrap">
+
+    <!-- ─── 프로젝트 사례 ─── -->
+    <div class="group" data-screen-label="프로젝트 사례">
+      <div class="group-head">
+        <h2>프로젝트 사례</h2>
+        <span class="count">01 — 06</span>
+      </div>
+      <div class="case-list">
+        <div class="case">
+          <div class="meta"><span class="tag">퍼스널 브랜딩</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>프로젝트 제목이 들어갈 자리 — 예: 의사 ○○○의 퍼스널 브랜드 구축</h3>
+            <p class="q">"이 사람은 진짜 누구인가?"</p>
+            <p class="desc">클라이언트가 누구였고, 어떤 상황이었는지. 온돌이 발견한 본질은 무엇이었는지. 어떤 방향을 설계했는지 — 3~4문장으로 담아주세요.</p>
+            <div class="outcome"><span>가치관 인터뷰</span><span>콘텐츠 방향 설계</span><span>채널 런칭</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <div class="meta"><span class="tag">브랜드 컨설팅</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>프로젝트 제목이 들어갈 자리 — 예: ○○ 브랜드 본질 재정의</h3>
+            <p class="q">"이 제품은 왜 존재하는가?"</p>
+            <p class="desc">브랜드가 걸어온 시간과 제품이 만들어진 이유에서 출발한 프로젝트의 이야기를 담아주세요.</p>
+            <div class="outcome"><span>본질 발견</span><span>브랜드 스토리</span><span>IP 구축</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <div class="meta"><span class="tag">영상 제작</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>프로젝트 제목이 들어갈 자리 — 예: ○○○ 다큐멘터리 영상</h3>
+            <p class="q">"화질보다 현장감."</p>
+            <p class="desc">Audio First 철학으로 만든 영상 프로젝트. 어떤 현장감과 감정을 담았는지 적어주세요.</p>
+            <div class="outcome"><span>기획·촬영·편집</span><span>Audio First</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <div class="meta"><span class="tag">SNS 운영</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>프로젝트 제목이 들어갈 자리 — 예: ○○ 인스타그램 존재감 구축</h3>
+            <p class="q">"프로처럼 보이도록."</p>
+            <p class="desc">숏폼·그리드 관리·훅 디자인으로 만든 소셜 존재감 프로젝트를 담아주세요.</p>
+            <div class="outcome"><span>숏폼</span><span>그리드 관리</span><span>훅 디자인</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <div class="meta"><span class="tag">팟캐스트</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>프로젝트 제목이 들어갈 자리 — 예: ○○○ 팟캐스트 기획·제작</h3>
+            <p class="q">"이야기가 머무는 곳."</p>
+            <p class="desc">브랜드 하나가 아니라 생태계를 만드는 팟캐스트 프로젝트의 이야기를 담아주세요.</p>
+            <div class="outcome"><span>기획</span><span>제작</span><span>커뮤니티</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <div class="meta"><span class="tag">브랜드 큐레이션</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>프로젝트 제목이 들어갈 자리 — 예: ○○ 제품 브랜드 파트너십</h3>
+            <p class="q">"이 제품은 왜 존재하는가?"</p>
+            <p class="desc">진정성 있는 제품을 발견하고 연결한 큐레이션·파트너십 사례를 담아주세요.</p>
+            <div class="outcome"><span>제품 발굴</span><span>파트너십</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 강의·교육 실적 ─── -->
+    <div class="group" data-screen-label="강의·교육 실적">
+      <div class="group-head">
+        <h2>강의 · 교육 실적</h2>
+        <span class="count">07 — 10</span>
+      </div>
+      <div class="case-list">
+        <div class="case">
+          <div class="meta"><span class="tag">진로 설계</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>강의 제목이 들어갈 자리 — 예: ○○고등학교 진로 설계 특강</h3>
+            <p class="q">"이 학생은 어떤 삶을 살아야 하는가?"</p>
+            <p class="desc">대상, 규모, 기간과 함께 어떤 내용을 다뤘는지 적어주세요.</p>
+            <div class="outcome"><span>대상: 예) 고등학생 120명</span><span>기간: 예) 2025.3 — 2025.7</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <div class="meta"><span class="tag">입시 컨설팅</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>교육 실적이 들어갈 자리 — 예: 대입 포트폴리오 컨설팅</h3>
+            <p class="q">"방향이 먼저다."</p>
+            <p class="desc">학생 개개인의 본질에서 출발한 포트폴리오·진학 설계 실적을 담아주세요.</p>
+            <div class="outcome"><span>1:1 컨설팅</span><span>포트폴리오 설계</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <div class="meta"><span class="tag">교사 연수</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>강의 제목이 들어갈 자리 — 예: 교원 대상 콘텐츠 활용 연수</h3>
+            <p class="q">"교실에도 이야기가 있다."</p>
+            <p class="desc">교육 현장 경험을 바탕으로 한 연수·워크숍 실적을 담아주세요.</p>
+            <div class="outcome"><span>워크숍</span><span>연수</span></div>
+          </div>
+        </div>
+        <div class="case">
+          <div class="meta"><span class="tag">스포츠 교육</span><span class="year">YEAR</span></div>
+          <div>
+            <h3>교육 실적이 들어갈 자리 — 예: 유소년 스포츠 성장 프로그램</h3>
+            <p class="q">"성장의 과정을 본다."</p>
+            <p class="desc">스포츠 현장에서의 교육·멘토링 실적을 담아주세요.</p>
+            <div class="outcome"><span>멘토링</span><span>프로그램 운영</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<section class="pf-cta" data-screen-label="포트폴리오 CTA">
+  <h2>다음 이야기는,<br>당신의 것일 수 있습니다.</h2>
+  <p>Heart over hype. 과장을 이기는 진심.</p>
+  <a class="btn btn-flame" href="index.html#contact">문의하기</a>
+</section>
+
+<footer class="footer" data-screen-label="푸터">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/emblem.png" alt="">
+      <div>ONDOL COMPANY<br><span class="footer-sub">Heart over hype. · Built on the Rock.</span></div>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">메인</a>
+      <a href="https://www.instagram.com/ondol_company" target="_blank" rel="noopener">@ondol_company</a>
+      <a href="mailto:ontherock.dol@gmail.com">ontherock.dol@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
