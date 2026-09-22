@@ -144,14 +144,14 @@ th {
 <body>
 <nav class="nav" data-screen-label="내비게이션">
   <div class="nav-inner">
-    <a class="nav-brand" href="index.html">
+    <a class="nav-brand" href="ondol.html">
       <img src="assets/emblem.png" alt="온돌컴퍼니 엠블럼">
       <span>ONDOL COMPANY</span>
     </a>
     <div class="nav-links">
-      <a href="index.html">메인</a>
+      <a href="ondol.html">메인</a>
       <a href="portfolio.html">포트폴리오</a>
-      <a class="nav-cta" href="index.html#contact">문의하기</a>
+      <a class="nav-cta" href="ondol.html#contact">문의하기</a>
     </div>
   </div>
 </nav>
@@ -161,12 +161,14 @@ th {
     <h1>상담 신청 관리</h1>
     <p class="lead">Supabase에 저장된 상담 신청을 확인하고 처리 상태를 변경할 수 있습니다.</p>
 
-    <div id="loginBox" class="login-box">
-      <label for="adminPassword">관리자 비밀번호</label>
-      <input id="adminPassword" type="password" placeholder="비밀번호를 입력하세요">
-      <button class="btn btn-flame" id="loginBtn" type="button">로그인</button>
-      <p class="hint">기본 비밀번호: ondol-admin-2026</p>
-    </div>
+    <form id="loginBox" class="login-box">
+      <label for="adminEmail">관리자 이메일</label>
+      <input id="adminEmail" type="email" autocomplete="username" placeholder="name@example.com" required>
+      <label for="adminPassword">비밀번호</label>
+      <input id="adminPassword" type="password" autocomplete="current-password" placeholder="비밀번호를 입력하세요" required>
+      <button class="btn btn-flame" id="loginBtn" type="submit">로그인</button>
+      <p class="hint" id="loginHint"></p>
+    </form>
 
     <div id="adminContent" style="display:none;">
       <div class="toolbar">
@@ -200,16 +202,28 @@ th {
   </section>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const ADMIN_PASSWORD = 'ondol-admin-2026';
-const SUPABASE_URL = localStorage.getItem('ondolSupabaseUrl') || 'https://pnimnighseyqbuverztd.supabase.co';
-const SUPABASE_ANON_KEY = localStorage.getItem('ondolSupabaseAnonKey') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBuaW1uaWdoc2V5cWJ1dmVyenRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NzgyNzQsImV4cCI6MjA5OTI1NDI3NH0.oh3weN8T7eI70LyxlNyHE4aTw6EGlIKuG5lgExi-s6Y';
+const SUPABASE_URL = 'https://pnimnighseyqbuverztd.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBuaW1uaWdoc2V5cWJ1dmVyenRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NzgyNzQsImV4cCI6MjA5OTI1NDI3NH0.oh3weN8T7eI70LyxlNyHE4aTw6EGlIKuG5lgExi-s6Y';
+const IDLE_LIMIT_MS = 30 * 60 * 1000; // 30분 동안 활동 없으면 자동 로그아웃
+
+// 로그인 세션은 탭을 닫으면 사라지도록 sessionStorage에 저장
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { storage: window.sessionStorage, persistSession: true, autoRefreshToken: true }
+});
+
+// 예전 비밀번호 방식이 남긴 값 정리
+localStorage.removeItem('ondolAdminPassword');
+sessionStorage.removeItem('ondolAdminAuthenticated');
 
 const loginBox = document.getElementById('loginBox');
 const adminContent = document.getElementById('adminContent');
 const loginBtn = document.getElementById('loginBtn');
 const logoutBtn = document.getElementById('logoutBtn');
+const adminEmailInput = document.getElementById('adminEmail');
 const adminPasswordInput = document.getElementById('adminPassword');
+const loginHint = document.getElementById('loginHint');
 const statusText = document.getElementById('statusText');
 const consultationRows = document.getElementById('consultationRows');
 const countTotal = document.getElementById('countTotal');
@@ -285,97 +299,85 @@ function renderRows(rows) {
 
 async function loadConsultations() {
   setStatus('상담 신청을 불러오는 중입니다...');
-
-  try {
-    const response = await fetch(SUPABASE_URL + '/rest/v1/consultations?select=*&order=created_at.desc', {
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: 'Bearer ' + SUPABASE_ANON_KEY,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      setStatus('불러오기에 실패했습니다: ' + errorText);
-      return;
-    }
-
-    const data = await response.json();
-    renderRows(data || []);
-    setStatus('상담 신청 ' + (data || []).length + '건을 불러왔습니다.');
-  } catch (error) {
+  const { data, error } = await sb.from('consultations').select('*').order('created_at', { ascending: false });
+  if (error) {
     setStatus('불러오기에 실패했습니다: ' + error.message);
+    return;
   }
+  renderRows(data || []);
+  setStatus('상담 신청 ' + (data || []).length + '건을 불러왔습니다.');
 }
 
 async function updateStatus(id, status) {
-  try {
-    const response = await fetch(SUPABASE_URL + '/rest/v1/consultations?id=eq.' + id, {
-      method: 'PATCH',
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: 'Bearer ' + SUPABASE_ANON_KEY,
-        'Content-Type': 'application/json',
-        Prefer: 'return=representation'
-      },
-      body: JSON.stringify({ status: status })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      setStatus('상태 변경에 실패했습니다: ' + errorText);
-      return;
-    }
-
-    setStatus('상태를 변경했습니다.');
+  const { data, error } = await sb.from('consultations').update({ status: status }).eq('id', id).select('id');
+  if (error || !data || !data.length) {
+    setStatus('상태 변경에 실패했습니다' + (error ? ': ' + error.message : ' (권한 없음)'));
     loadConsultations();
-  } catch (error) {
-    setStatus('상태 변경에 실패했습니다: ' + error.message);
-  }
-}
-
-function login() {
-  const password = adminPasswordInput.value.trim();
-  if (!password) {
-    setStatus('비밀번호를 입력해주세요.');
     return;
   }
-
-  if (password !== ADMIN_PASSWORD) {
-    setStatus('비밀번호가 올바르지 않습니다.');
-    return;
-  }
-
-  localStorage.setItem('ondolAdminPassword', password);
-  sessionStorage.setItem('ondolAdminAuthenticated', 'true');
-  showAdmin();
+  setStatus('상태를 변경했습니다.');
   loadConsultations();
 }
 
-function logout() {
-  sessionStorage.removeItem('ondolAdminAuthenticated');
-  adminPasswordInput.value = '';
-  showLogin();
-  setStatus('로그아웃되었습니다.');
+function setLoginHint(message) {
+  loginHint.textContent = message;
 }
 
-loginBtn.addEventListener('click', login);
-logoutBtn.addEventListener('click', logout);
-adminPasswordInput.addEventListener('keydown', function (event) {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    login();
+async function login(event) {
+  event.preventDefault();
+  const email = adminEmailInput.value.trim();
+  const password = adminPasswordInput.value;
+  if (!email || !password) {
+    setLoginHint('이메일과 비밀번호를 입력해주세요.');
+    return;
   }
+  loginBtn.disabled = true;
+  setLoginHint('로그인 중입니다...');
+  const { error } = await sb.auth.signInWithPassword({ email: email, password: password });
+  loginBtn.disabled = false;
+  adminPasswordInput.value = '';
+  if (error) {
+    setLoginHint('이메일 또는 비밀번호가 올바르지 않습니다.');
+    return;
+  }
+  setLoginHint('');
+  showAdmin();
+  resetIdleTimer();
+  loadConsultations();
+}
+
+async function logout(message) {
+  clearTimeout(idleTimer);
+  await sb.auth.signOut();
+  consultationRows.innerHTML = '';
+  showLogin();
+  setLoginHint(typeof message === 'string' ? message : '로그아웃되었습니다.');
+}
+
+let idleTimer = null;
+function resetIdleTimer() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(function () {
+    logout('30분 동안 활동이 없어 자동 로그아웃되었습니다.');
+  }, IDLE_LIMIT_MS);
+}
+['click', 'keydown', 'scroll'].forEach(function (evt) {
+  window.addEventListener(evt, function () {
+    if (adminContent.style.display === 'block') resetIdleTimer();
+  }, { passive: true });
 });
 
-window.addEventListener('DOMContentLoaded', function () {
-  if (sessionStorage.getItem('ondolAdminAuthenticated') === 'true' || localStorage.getItem('ondolAdminPassword') === ADMIN_PASSWORD) {
+loginBox.addEventListener('submit', login);
+logoutBtn.addEventListener('click', function () { logout(); });
+
+window.addEventListener('DOMContentLoaded', async function () {
+  const { data } = await sb.auth.getSession();
+  if (data.session) {
     showAdmin();
+    resetIdleTimer();
     loadConsultations();
   } else {
     showLogin();
-    setStatus('관리자 비밀번호를 입력하세요.');
   }
 });
 </script>
